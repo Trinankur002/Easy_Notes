@@ -6,6 +6,16 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".MainActivity">
+    
+    <androidx.appcompat.widget.SearchView
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:id="@+id/searchView_home"
+        android:layout_alignParentTop="true"
+        android:background="#C4BDCD"
+        android:layout_margin="16dp"
+        app:queryHint="Search Notes. . ."
+        app:iconifiedByDefault="false"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_home"
@@ -17,7 +27,8 @@
         android:layout_marginEnd="6dp"
         android:layout_marginRight="6dp"
         android:layout_marginBottom="6dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_below="@id/searchView_home"
+        app:layout_constraintBottom_toBottomOf="@id/searchView_home"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -35,5 +46,6 @@
         android:layout_marginEnd="30dp"
         android:layout_marginRight="30dp"
         android:layout_marginBottom="30dp"
-        android:src="@drawable/ic_baseline_add_24" />
+        android:src="@drawable/ic_baseline_add_24"
+        tools:ignore="SpeakableTextPresentCheck" />
 </RelativeLayout>

@@ -1,17 +1,18 @@
 package com.example.easynotes;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.PopupMenu;
+//import android.widget.SearchView;
+import androidx.appcompat.widget.SearchView;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -26,17 +27,21 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
     RoomDB database;
     FloatingActionButton fab_add;
     NotesData selectedNote;
+    SearchView searchView_home;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        searchView_home = findViewById(R.id.searchView_home);
 
         recyclerView = findViewById(R.id.recycler_home);
         fab_add = findViewById(R.id.fab_add);
 
         database = RoomDB.getInstance(this);
         notesData = database.mainDAO().getAll();
+
 
         updateRecycler(notesData);
 
@@ -47,6 +52,31 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
                 startActivityForResult(intent,101);
             }
         });
+
+        searchView_home.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String newText) {
+                filter(newText);
+                return true ;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                filter(newText);
+                return true ;
+            }
+        });
+    }
+
+    private void filter(String newText) {
+        List<NotesData> filteredList = new ArrayList<>();
+        for (NotesData singleNotes : notesData){
+            if (singleNotes.getTitle().toLowerCase().contains(newText.toLowerCase())){
+                filteredList.add(singleNotes);
+            }
+        }
+
+        notesListAdapter.filterList(filteredList);
     }
 
     @Override
